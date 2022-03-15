@@ -38,24 +38,42 @@ dependencies:
   google_fonts: ^2.3.0
   video_player: any
   getwidget: ^2.0.5
+  firebase_storage: ^10.2.9
+  firebase_database: ^9.0.8
   cloud_firestore: ^3.1.2
-  firebase_messaging_platform_interface: 3.1.6
-  firebase_crashlytics_platform_interface: 3.1.13
-  cloud_firestore_platform_interface: 5.4.13
-  firebase_auth_platform_interface: 6.1.11
-  firebase_storage_platform_interface: 4.0.14
-  cloud_functions_platform_interface: 5.0.21
-  firebase_analytics_platform_interface: 3.0.5
-  firebase_remote_config_platform_interface: 1.0.5
-  firebase_dynamic_links_platform_interface: 0.2.0+5
-  firebase_performance_platform_interface: 0.1.0+5
-  firebase_app_installations_platform_interface: 0.1.0+6
   firebase_core: ^1.0.1
-
+  firebase_auth: ^1.1.0
+  fluttertoast: ^8.0.4
+  salomon_bottom_bar: ^3.2.0
+  material_design_icons_flutter: ^5.0.6595
+  font_awesome_flutter: ^9.0.0
+  flutter_swiper: ^1.1.6
+  flutter_localizations:
+    sdk: flutter
+  get_it: ^7.2.0
+  hive: ^2.0.5
+  hive_flutter: ^1.1.0
+  dart_des: ^1.0.0
+  carousel_slider: ^4.0.0
+  cached_network_image: ^3.2.0
+  youtube_explode_dart: 1.10.6
+  audio_manager: ^0.8.1
+  audioplayers: ^0.20.1
+  path_provider: ^2.0.8
+  assets_audio_player_web: ^3.0.4+1
+  just_audio: ^0.9.20
+  image_picker: ^0.8.4+10
+  flutter_audio_query: "^0.3.4+1"
+  file_picker: ^4.5.0
+  google_sign_in: ^5.2.4
+  get: ^4.6.1
+  audio_service: ^0.18.4
+  audio_session: ^0.1.6+1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -79,6 +97,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/sound/
+    - assets/songs/
     - assets/picture/
   #   - images/a_dot_ham.jpeg
 

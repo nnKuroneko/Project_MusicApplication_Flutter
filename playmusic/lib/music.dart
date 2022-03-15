@@ -24,13 +24,12 @@ class _MusicWidgetState extends State<MusicWidget> with SingleTickerProviderStat
   void initState() {
     // TODO: implement initState
     super.initState();
-
     iconController = AnimationController(
         vsync: this, duration: Duration(milliseconds: 1000));
-
-    //audioPlayer.open(Audio('assets/sound/babysharkdance.mp3'),autoStart: false,showNotification: true);
-    audioPlayer.open(Audio.network("https://thinknews.com.ng/wp-content/uploads/2021/11/PINKFONG_Baby_Shark_Dance_(thinkNews.com.ng).mp3"),
-        autoStart: true,showNotification: true);
+    audioPlayer.open(Audio('assets/sound/babysharkdance.mp3'),
+     autoStart: false,showNotification: true);
+   // audioPlayer.open(Audio.network("https://thinknews.com.ng/wp-content/uploads/2021/11/PINKFONG_Baby_Shark_Dance_(thinkNews.com.ng).mp3"),
+   //     autoStart: true,showNotification: true);
   }
 
   void AnimateIcon() {
@@ -74,10 +73,14 @@ class _MusicWidgetState extends State<MusicWidget> with SingleTickerProviderStat
               SizedBox(height: 30,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
+
                 children: [
-                  InkWell(child: Icon(CupertinoIcons.backward_fill),onTap: (){
+                  InkWell(
+                    child: Icon(CupertinoIcons.backward_fill)
+                    ,onTap: (){
                     audioPlayer.seekBy(Duration(seconds: -10));
-                  },),
+                  },
+                  ),
                   GestureDetector(
                     onTap: () {
                       AnimateIcon();
@@ -95,6 +98,9 @@ class _MusicWidgetState extends State<MusicWidget> with SingleTickerProviderStat
                     audioPlayer.next();
                   },),
                 ],
+
+
+
               ),
             ],
           ),

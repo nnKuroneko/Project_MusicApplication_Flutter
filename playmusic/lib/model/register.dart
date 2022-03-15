@@ -2,10 +2,10 @@ class Register {
 
   String email;
   String password;
-  String cfpassword;
+  String username;
 
   Register(
-      this.email , this.password , this.cfpassword
+      this.email , this.password , this.username
       );
 
 

@@ -1,7 +1,19 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:playmusic/home_screen.dart';
+import 'package:playmusic/login.dart';
 import 'package:playmusic/model/register.dart';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
+
+
+void main() async  {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+}
 
 class RegisterScreen extends StatefulWidget {
 
@@ -19,11 +31,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Register register = Register(
       AutofillHints.email ,
       AutofillHints.password ,
-      AutofillHints.password );
+      AutofillHints.username );
 
 
   bool isActive = true;
   bool? isChecked = false;
+
+  late String username;
+
 
   Widget _buildTextField(
       {
@@ -112,7 +127,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             color: Colors.black,
           ),
         ),
-        onPressed: () {
+        onPressed: () async {
 
           _saveForm();
 
@@ -142,244 +157,315 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   final _password = TextEditingController();
   final _email = TextEditingController();
-  final _cfpassword = TextEditingController();
+  final _username = TextEditingController();
 
 
-  void _saveForm(){
+  Future<void> _saveForm() async {
 
-    if(_keyForm.currentState!.validate()){
+    if(_keyForm.currentState!.validate())
+
+      {
 
       _keyForm.currentState!.save();
-      _keyForm.currentState!.reset();
+      try{
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+            email: register.email,
+            password: register.password
+        ).then((value) async {
+          _keyForm.currentState!.reset();
+          Fluttertoast.showToast(
+              msg: "สร้างปัญชีผู้ใช้เรียบร้อยแล้ว",
+              gravity: ToastGravity.TOP
+          );
+          await value.user?.updateProfile(displayName: username).then(
+                  (value) =>
+              Navigator.pushNamedAndRemoveUntil(context
+              , '/auth', (route) => false)
+             );
+           }
+        );
+      }
+
+      on FirebaseAuthException catch(e){
+        print(e.code);
+        //print(e.message);
+
+        String message;
+        if(e.code == 'email-already-in-use'){
+          message = "มีอีเมลนี้ในระบบแล้วครับ โปรดใช้อีเมลอื่นแทน";
+        }else if(e.code == 'weak-password'){
+          message = "รหัสผ่านต้องมีความยาว 6 ตัวอักษรขึ้นไป";
+        }else if(e.code == 'invalid-email'){
+          message = "อีเมลล์ของคุณไม่ถุกต้อง โปรดลองใหม่";
+        }else {
+          message = e.message!;
+        }
+
+        Fluttertoast.showToast(
+
+          msg: message,
+          gravity: ToastGravity.TOP
+        );
+
+    }
 
 
-      print("email = ${register.email} password ${register.password} cfpassword ${register.cfpassword} ");
+      print("email = ${register.email} password ${register.password} username ${register.username} ");
 
     }
 
   }
-  
+
+  final Future<FirebaseApp> firebase = Firebase.initializeApp();
 
   @override
   Widget build(BuildContext context) {
-    
-    return SafeArea(
-      child: Scaffold(
-        body: Container(
 
-        child: Form(
-        key: _keyForm ,
-      child: Container(
-          
-          width: double.infinity,
-          height: double.infinity,
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage("assets/picture/registertheme.jpeg"),
-                fit: BoxFit.cover),
-          ),
+    return FutureBuilder(
 
+        future: firebase,
+        builder: (context,snapshot) {
 
+          if(snapshot.hasError){
+            return Scaffold(
+              appBar: AppBar(
+                title: Text("Error"),
+              ),
+            body: Center(
+              child: Text("${snapshot.error.toString()}"),
+            ),
+            );
+          }
 
+          if(snapshot.connectionState == ConnectionState.done){
 
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 40,
-              ).copyWith(top: 60),
-              child: Column(
-                children: [
-                  const Text(
-                    'สมัครสมาชิก',
-                    style: TextStyle(
-                      fontFamily: 'PT-Sans',
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
+            return SafeArea(
+              child: Scaffold(
+                body: Container(
 
+                    child: Form(
+                      key: _keyForm ,
+                      child: Container(
 
-
-
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  tabs(),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    child: const Text(
-                      'Email',
-                      style: TextStyle(
-                        fontFamily: 'PT-Sans',
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  _buildTextField(
-                    prefixedIcon: TextFormField(
-                      style: TextStyle(color: Colors.white),
-                      keyboardType: TextInputType.emailAddress,
-                      controller: _email,
-                      validator: (value) {
-                        if (value!.isEmpty) return 'โปรดใส่อีเมลล์ของคุณ';
-
-                        return null;
-                      },
-                      onSaved: (newValue) => register.email = newValue!,
-
-                      decoration: new InputDecoration(
-                        //fillColor: Colors.orange, filled: true, พื้นหลัง
-                        hintText: 'อีเมลล์ของคุณ',
-                        hintStyle: TextStyle(color: Colors.grey),
-                        prefixIcon: Icon(Icons.mail, color: Colors.white),
-                      ),
-                    ),
-
-                    obscureText: false,
-
-                  ),
-                  
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    child: const Text(
-                      'Password',
-                      style: TextStyle(
-                        fontFamily: 'PT-Sans',
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  _buildTextField(
-                    prefixedIcon: TextFormField(
-                      style: TextStyle(color: Colors.white),
-                      controller: _password,
-                      validator: (value) {
-                        if (value!.isEmpty) return 'โปรดใส่พาสเวิร์ดของคุณ';
-
-                        return null;
-                      },
-                      onSaved: (newValue) => register.password = newValue!,
-
-                      obscureText: true,
-                      decoration: new InputDecoration(
-                        //fillColor: Colors.orange, filled: true, พื้นหลัง
-                        hintText: 'พาสเวิร์ดของคุณ',
-                        hintStyle: TextStyle(color: Colors.grey),
-                        prefixIcon: Icon(Icons.lock, color: Colors.white),
-                      ),
-                    ), obscureText: true,
-
-
-
-                  ),
-                  const SizedBox(
-                    height: 25,
-                  ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    child: const Text(
-                      'Comfirm Password',
-                      style: TextStyle(
-                        fontFamily: 'PT-Sans',
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  _buildTextField(
-                    prefixedIcon: TextFormField(
-                      style: TextStyle(color: Colors.white),
-                      controller: _cfpassword,
-                      validator: (value) {
-                        if (value!.isEmpty) return 'โปรดใส่พาสเวิร์ดของคุณอีกครั้ง';
-
-                        return null;
-                      },
-                      onSaved: (newValue) => register.cfpassword = newValue!,
-
-                      obscureText: true,
-                      decoration: new InputDecoration(
-                        //fillColor: Colors.orange, filled: true, พื้นหลัง
-                        hintText: 'ยืนยันพาสเวิร์ดของคุณ',
-                        hintStyle: TextStyle(color: Colors.grey),
-                        prefixIcon: Icon(Icons.lock, color: Colors.white),
-                      ),
-                    ), obscureText: true,
-
-
-
-                  ),
-                  const SizedBox(
-                    height: 25,
-                  ),
-                  _buildLoginButton(),
-                  Container(
-                    margin: EdgeInsets.only(top: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text("คุณมีแอคเคาท์แล้วใช่มั้ย  ", style: TextStyle(
-                            color: Colors.grey
+                        width: double.infinity,
+                        height: double.infinity,
+                        decoration: const BoxDecoration(
+                          image: DecorationImage(
+                              image: AssetImage("assets/picture/registertheme.jpeg"),
+                              fit: BoxFit.cover),
                         ),
-                        ),
-                        GestureDetector(
-                          child: Text(
-                            " เข้าสู่ระบบ เลยซิ!!!",
-                            style: TextStyle(
-                                color: Color(0xffF5591F)
+
+
+                        child: SingleChildScrollView(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 40,
+                            ).copyWith(top: 60),
+                            child: Column(
+                              children: [
+                                const Text(
+                                  'สมัครสมาชิก',
+                                  style: TextStyle(
+                                    fontFamily: 'PT-Sans',
+                                    fontSize: 30,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                ),
+
+
+
+
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                tabs(),
+                                const SizedBox(
+                                  height: 15,
+                                ),
+                                Container(
+                                  alignment: Alignment.centerLeft,
+                                  child: const Text(
+                                    'Email',
+                                    style: TextStyle(
+                                      fontFamily: 'PT-Sans',
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 15,
+                                ),
+                                _buildTextField(
+                                  prefixedIcon: TextFormField(
+                                    style: TextStyle(color: Colors.white),
+                                    keyboardType: TextInputType.emailAddress,
+                                    controller: _email,
+                                    validator: (value) {
+                                      if (value!.isEmpty) return 'โปรดใส่อีเมลล์ของคุณ';
+
+                                      return null;
+                                    },
+                                    onSaved: (newValue) => register.email = newValue!,
+
+                                    decoration: new InputDecoration(
+                                      //fillColor: Colors.orange, filled: true, พื้นหลัง
+                                      hintText: 'อีเมลล์ของคุณ',
+                                      hintStyle: TextStyle(color: Colors.grey),
+                                      prefixIcon: Icon(Icons.mail, color: Colors.white),
+                                    ),
+                                  ),
+
+                                  obscureText: false,
+
+                                ),
+
+                                const SizedBox(
+                                  height: 15,
+                                ),
+                                Container(
+                                  alignment: Alignment.centerLeft,
+                                  child: const Text(
+                                    'Password',
+                                    style: TextStyle(
+                                      fontFamily: 'PT-Sans',
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                _buildTextField(
+                                  prefixedIcon: TextFormField(
+                                    style: TextStyle(color: Colors.white),
+                                    controller: _password,
+                                    validator: (value) {
+                                      if (value!.isEmpty) return 'โปรดใส่พาสเวิร์ดของคุณ';
+
+                                      return null;
+                                    },
+                                    onSaved: (newValue) => register.password = newValue!,
+
+                                    obscureText: true,
+                                    decoration: new InputDecoration(
+                                      //fillColor: Colors.orange, filled: true, พื้นหลัง
+                                      hintText: 'พาสเวิร์ดของคุณ',
+                                      hintStyle: TextStyle(color: Colors.grey),
+                                      prefixIcon: Icon(Icons.lock, color: Colors.white),
+                                    ),
+                                  ), obscureText: true,
+
+
+
+                                ),
+                                const SizedBox(
+                                  height: 25,
+                                ),
+                                Container(
+                                  alignment: Alignment.centerLeft,
+                                  child: const Text(
+                                    'Username',
+                                    style: TextStyle(
+                                      fontFamily: 'PT-Sans',
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                _buildTextField(
+
+                                  prefixedIcon: TextFormField(
+                                    onChanged: (value) => username = value.trim(),
+                                    style: TextStyle(color: Colors.white),
+                                    controller: _username,
+                                    validator: (value) {
+                                      if (value!.isEmpty) return 'โปรดใส่ยูสเซอร์เนมของคุณอีกครั้ง';
+
+                                      return null;
+                                    },
+                                    onSaved: (newValue) => register.username = newValue!,
+
+                                    obscureText: true,
+                                    decoration: new InputDecoration(
+                                      //fillColor: Colors.orange, filled: true, พื้นหลัง
+                                      hintText: 'ใส่ยูสเซอร์เนมของคุณ',
+                                      hintStyle: TextStyle(color: Colors.grey),
+                                      prefixIcon: Icon(Icons.account_circle, color: Colors.white),
+                                    ),
+                                  ), obscureText: false,
+
+
+
+                                ),
+                                const SizedBox(
+                                  height: 25,
+                                ),
+                                _buildLoginButton(),
+                                Container(
+                                  margin: EdgeInsets.only(top: 10),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text("คุณมีแอคเคาท์แล้วใช่มั้ย  ", style: TextStyle(
+                                          color: Colors.grey
+                                      ),
+                                      ),
+                                      GestureDetector(
+                                        child: Text(
+                                          " เข้าสู่ระบบ เลยซิ!!!",
+                                          style: TextStyle(
+                                              color: Color(0xffF5591F)
+                                          ),
+                                        ),
+                                        onTap: () {
+                                          // Write Tap Code Here.
+                                          Navigator.pushReplacement(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) => LoginScreen(title: ''),
+                                              )
+                                          );
+                                        },
+                                      )
+                                    ],
+                                  ),
+                                )
+
+                              ],
                             ),
                           ),
-                          onTap: () {
-                            // Write Tap Code Here.
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => HomeScreen(title: ''),
-                                )
-                            );
-                          },
-                        )
-                      ],
-                    ),
-                  )
+                        ),
 
-                ],
+
+                      ),
+
+
+                    )
+
+
+
+                ),
               ),
+            );
+          }
+
+          return Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
             ),
-          ),
+          );
 
-
-         ),
-
-
-        )
-          
-          
-          
-        ),
-      ),
-    );
+        }
+        );
 
 
   }
