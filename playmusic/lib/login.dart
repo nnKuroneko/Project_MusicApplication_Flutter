@@ -102,31 +102,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget tabs() {
-    return DefaultTabController(
-      length: 2,
-      child: TabBar(
 
-        tabs: [
-          Tab(
-            child: Text(
-                "Sign in"
-            ),
-
-          ),
-
-          Tab(
-            child: Text(
-                "Register"
-            ),
-          ),
-        ],
-        labelColor: Colors.white,
-        unselectedLabelColor: Colors.grey,
-      ),
-
-    );
-  }
 
   Widget _buildLoginButton() {
     return SizedBox(
@@ -285,7 +261,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 const SizedBox(
                                   height: 110,
                                 ),
-                                tabs(),
+
                                 const SizedBox(
                                   height: 15,
                                 ),
@@ -446,7 +422,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         child: Text(
                                           "คลิกเพื่อกู้คืน !",
                                           style: TextStyle(
-                                              color: Colors.black
+                                              color: Colors.orange
                                           ),
                                         ),
                                         onTap: () {

@@ -115,7 +115,6 @@ class _ArtistScreenState extends State<ArtistScreen> {
               if (streamSnapshot.hasData){
 
                 return Padding(
-
                   padding: EdgeInsets.only(
                     left: 20.0,
                     top: mediaQuery.size.height / 1.8 + 48.0,
@@ -123,9 +122,7 @@ class _ArtistScreenState extends State<ArtistScreen> {
                     bottom: mediaQuery.padding.bottom + 16.0,
                   ),
                   child: Column(
-
                     children: <Widget>[
-
                       _buildWidgetHeaderSong(),
                       SizedBox(height: 16.0),
                       Expanded(
@@ -142,11 +139,8 @@ class _ArtistScreenState extends State<ArtistScreen> {
                               ),
                             );
                           },
-
-
                           itemCount: streamSnapshot.data!.docs.length,
                           itemBuilder: (BuildContext context, int index) {
-
                             final DocumentSnapshot documentSnapshot = streamSnapshot.data!.docs[index];
 
                             if (documentSnapshot["singer"] == widget.singer ){
@@ -156,21 +150,16 @@ class _ArtistScreenState extends State<ArtistScreen> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => MusicPlayer(
-
                                         name: documentSnapshot["name"].toString(),
                                         image : documentSnapshot["image"].toString(),
                                         url : documentSnapshot["url"].toString(),
                                         singer: documentSnapshot["singer"].toString(),
                                         duration: documentSnapshot["duration"].toInt(),
-
-
                                       ),
                                       //pageBuilder: (context, _, __) => MusicBarScreen(widget.song)
-
                                     ),
                                   );
                                 },
-
                                 child: Row(
 
                                   children: <Widget>[
@@ -205,25 +194,15 @@ class _ArtistScreenState extends State<ArtistScreen> {
 
                                   ],
                                 ),
-
-
                               );
-
-
                             }
-
-
                             return SizedBox.shrink();
-
                           },
-
                         ),
                       ),
                     ],
                   ),
                 );
-
-
               }
 
               return const Center(

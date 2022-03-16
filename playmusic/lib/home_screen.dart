@@ -54,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final user_email = FirebaseAuth.instance.currentUser!.email;
   //final uid = FirebaseAuth.instance.currentUser!.uid;
   final username = FirebaseAuth.instance.currentUser!.displayName;
-  final photo = FirebaseAuth.instance.currentUser!.photoURL;
+  final avatarUrl = FirebaseAuth.instance.currentUser!.photoURL;
 
   //final photo = FirebaseAuth.instance.currentUser!;
 
@@ -66,7 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
 
     final Gradient _gradient = LinearGradient(
-      colors: [Colors.yellow, Colors.white],
+      colors: [Colors.pink, Colors.white],
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,
     );
@@ -160,32 +160,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
 
-                //leading: Icon(Icons.menu),
-           //  title: Padding(
-           //    padding: const EdgeInsets.only(top: 3.0, bottom: 3),
-           //    child: Container(
-           //      height: 40,
-           //      padding: EdgeInsets.only(left: 5, right: 5),
-           //      decoration: BoxDecoration(
-           //          borderRadius: BorderRadius.circular(15),
-           //          color: Colors.white.withOpacity(0.1)),
-           //
-           //      child: TextField(
-           //        decoration: InputDecoration(
-           //            icon: Icon(
-           //              Icons.search,
-           //              color: Colors.white,
-           //              size: 20,
-           //            ),
-           //            hintText: "   Search album,song...",
-           //            hintStyle: TextStyle(
-           //              color: Colors.white,
-           //            )),
-           //      ),
-           //    ),
-           //  ),
+                //leading: Icon(Icons.music_note_sharp,color: Colors.white,),
 
-                title: Center(
+
+
+                  title: Center(
                   child: ShaderMask(
                     blendMode: BlendMode.modulate,
                     shaderCallback: (size) => _gradient.createShader(
@@ -193,6 +172,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     child: Text(
                       '   Musicly',
+
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -214,16 +194,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: CircleAvatar(
 
                       backgroundColor: Colors.white,
-                      //backgroundImage: NetworkImage('https://i.pinimg.com/originals/4a/1a/58/4a1a5850e7e2f47c4fc3a2c572368ae7.png'),
+                      backgroundImage: NetworkImage(avatarUrl!),
                       child: IconButton(
                         onPressed: () {
                           drawerkey.currentState?.openDrawer();
                         },
-                        icon: Image.asset(
-                          'assets/picture/useraccount.png',
-                          height: 70,
-                          fit: BoxFit.cover,
-                        ),
+                        icon: SizedBox()
                       ),
 
                     ),
@@ -265,7 +241,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       currentAccountPicture: new CircleAvatar(
                         radius: 50.0,
                         backgroundColor: const Color(0xFF778899),
-                        backgroundImage: NetworkImage("https://i1.sndcdn.com/avatars-000241167684-al6jq6-t500x500.jpg",
+                        backgroundImage: NetworkImage(avatarUrl!,
                         ),
 
                       ),
@@ -323,27 +299,27 @@ class _HomeScreenState extends State<HomeScreen> {
 
                     //  if(user_email == "oalo1234@gmail.com")
 
-                    ListTile(
-                      leading: Icon(Icons.settings , color: Colors.white),
-                      title: const Text('การตั้งค่า' , style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white)),
-                      subtitle: Text("ตั้งค่าการใช้งาน" , style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white)),
-                      onTap: () {
-                        if(user_email == "oalo1234@gmail.com"){
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => TestCode(),
-                              )
-                          );
+             //     ListTile(
+             //       leading: Icon(Icons.settings , color: Colors.white),
+             //       title: const Text('การตั้งค่า' , style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white)),
+             //       subtitle: Text("ตั้งค่าการใช้งาน" , style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white)),
+             //       onTap: () {
+             //         if(user_email == "oalo1234@gmail.com"){
+             //           Navigator.pushReplacement(
+             //               context,
+             //               MaterialPageRoute(
+             //                 builder: (context) => TestCode(),
+             //               )
+             //           );
+             //
+             //         }else{
+             //           Navigator.pop(context);
+             //         }
+             //
+             //       },
+             //     ),
 
-                        }else{
-                          Navigator.pop(context);
-                        }
-
-                      },
-                    ),
-
-                    SizedBox(height: 110,),
+                    SizedBox(height: 180,),
 
                     Column(
                       mainAxisAlignment: MainAxisAlignment.end,

@@ -230,7 +230,7 @@ class _MusicPlayerState extends State<MusicPlayer> with WidgetsBindingObserver {
                                 icon: Icon(Icons.add,color: Colors.white,size: 40,),
                                 onPressed: () async {
 
-                                  if(QueryDocumentSnapshot == widget.name) {
+                                  if(createmusicplaylist.where('name') == widget.name) {
 
                                     Fluttertoast.showToast(
                                         msg: 'เพลงนี้อยู่ในเพลย์ลิสเรียบร้อยแล้ว',
@@ -476,7 +476,9 @@ class ControlButtons extends StatelessWidget {
           stream: player.sequenceStateStream,
           builder: (context, snapshot) => IconButton(
             icon: Icon(Icons.skip_previous_outlined,color: Colors.white, size: 40),
-            onPressed: player.hasPrevious ? player.seekToPrevious : null,
+            onPressed: () async {
+              await player.seek(Duration(seconds: 0));
+            },
           ),
         ),
 
@@ -523,7 +525,9 @@ class ControlButtons extends StatelessWidget {
           stream: player.sequenceStateStream,
           builder: (context, snapshot) => IconButton(
             icon: Icon(Icons.skip_next_outlined,color: Colors.white, size: 40),
-            onPressed: player.hasNext ? player.seekToNext : null,
+            onPressed: () async {
+              await player.seek(Duration(seconds: 600));
+            },
           ),
         ),
 

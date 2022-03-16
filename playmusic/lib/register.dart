@@ -28,16 +28,14 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
 
   final _keyForm  = GlobalKey<FormState> ();
-  Register register = Register(
-      AutofillHints.email ,
-      AutofillHints.password ,
-      AutofillHints.username );
+  Register register = Register(AutofillHints.email ,AutofillHints.password ,AutofillHints.username , AutofillHints.url  );
 
 
   bool isActive = true;
   bool? isChecked = false;
 
   late String username;
+  late String avatarUrl;
 
 
   Widget _buildTextField(
@@ -73,32 +71,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  Widget tabs() {
-    return DefaultTabController(
-      length: 2,
-      child: TabBar(
-        tabs: [
-          Tab(
-            child: Text(
-                "Sign in"
-            ),
 
-          ),
-          Tab(
-            child: Text(
-                "Register"
-            ),
-
-          ),
-        ],
-
-
-
-        labelColor: Colors.white,
-        unselectedLabelColor: Colors.grey,
-      ),
-    );
-  }
 
   Widget _buildLoginButton() {
     return SizedBox(
@@ -131,6 +104,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
           _saveForm();
 
+
         },
       ),
     );
@@ -158,6 +132,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _password = TextEditingController();
   final _email = TextEditingController();
   final _username = TextEditingController();
+  final _avatarUrl = TextEditingController();
 
 
   Future<void> _saveForm() async {
@@ -177,7 +152,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               msg: "สร้างปัญชีผู้ใช้เรียบร้อยแล้ว",
               gravity: ToastGravity.TOP
           );
-          await value.user?.updateProfile(displayName: username).then(
+          await value.user?.updateProfile(photoURL: avatarUrl , displayName: username).then(
                   (value) =>
               Navigator.pushNamedAndRemoveUntil(context
               , '/auth', (route) => false)
@@ -279,7 +254,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 const SizedBox(
                                   height: 20,
                                 ),
-                                tabs(),
+
                                 const SizedBox(
                                   height: 15,
                                 ),
@@ -358,11 +333,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       hintStyle: TextStyle(color: Colors.grey),
                                       prefixIcon: Icon(Icons.lock, color: Colors.white),
                                     ),
-                                  ), obscureText: true,
-
-
+                                  ), obscureText: false,
 
                                 ),
+
                                 const SizedBox(
                                   height: 25,
                                 ),
@@ -394,12 +368,56 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     },
                                     onSaved: (newValue) => register.username = newValue!,
 
-                                    obscureText: true,
+
+                                    obscureText: false,
                                     decoration: new InputDecoration(
                                       //fillColor: Colors.orange, filled: true, พื้นหลัง
                                       hintText: 'ใส่ยูสเซอร์เนมของคุณ',
                                       hintStyle: TextStyle(color: Colors.grey),
                                       prefixIcon: Icon(Icons.account_circle, color: Colors.white),
+                                    ),
+                                  ), obscureText: false,
+
+                                ),
+
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Container(
+                                  alignment: Alignment.centerLeft,
+                                  child: const Text(
+                                    'Profile link',
+                                    style: TextStyle(
+                                      fontFamily: 'PT-Sans',
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                _buildTextField(
+
+                                  prefixedIcon: TextFormField(
+                                    onChanged: (value) => avatarUrl = value.trim(),
+                                    style: TextStyle(color: Colors.white),
+                                    controller: _avatarUrl,
+                                    validator: (value) {
+                                      if (value!.isEmpty) return 'โปรดใส่ลิ้งรูปโปรไฟล์ของคุณ';
+
+                                      return null;
+                                    },
+                                    onSaved: (newValue) => register.avatarUrl = newValue!,
+
+
+                                    obscureText: false,
+                                    decoration: new InputDecoration(
+                                      //fillColor: Colors.orange, filled: true, พื้นหลัง
+                                      hintText: 'ใส่ลิ้งรูปโปรไฟล์ของคุณ',
+                                      hintStyle: TextStyle(color: Colors.grey),
+                                      prefixIcon: Icon(Icons.picture_in_picture, color: Colors.white),
                                     ),
                                   ), obscureText: false,
 

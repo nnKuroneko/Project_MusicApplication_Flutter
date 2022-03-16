@@ -1,5 +1,10 @@
+import 'dart:math';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -23,7 +28,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final user_email = FirebaseAuth.instance.currentUser!.email;
   final namepictureuid = FirebaseAuth.instance.currentUser!.uid;
   final username = FirebaseAuth.instance.currentUser!.displayName;
-  //final avatarUrl = FirebaseAuth.instance.currentUser!.photoURL;
+  final avatarUrl = FirebaseAuth.instance.currentUser!.photoURL;
 
 
   late Profile currentUser;
@@ -46,30 +51,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Future uploadPic(BuildContext context) async{
     FirebaseStorage storage = FirebaseStorage.instance;
     String fileName = basename("images/Profile_${namepictureuid}");
+    //var randomno = Random(25);
     Reference ref = storage.ref().child('Profile/$fileName');
     UploadTask uploadTask = ref.putFile(File(_image!.path ));
 
-    TaskSnapshot taskSnapshot =await uploadTask.whenComplete(() =>
-        setState(() {
-          print("Profile Picture uploaded");
-          Scaffold.of(context).showSnackBar(SnackBar(content: Text('Profile Picture Uploaded')));
-        }
-        ),
+
+    uploadTask.whenComplete(() async {
+      String url;
+      url = await ref.getDownloadURL();
+      await FirebaseAuth.instance.currentUser!.updatePhotoURL(url);
+      print(" $url");
+
+      Fluttertoast.showToast(
+          msg: "อัพโหลดโปรไฟล์เรียบร้อยแล้ว",
+          gravity: ToastGravity.TOP
+      );
+
+    }
+
     );
-   // Uri downloadUri = taskSnapshot.getMetadata().getDownloadUrl();
-
-    final avatarUrl = await (await uploadTask.whenComplete(() => null)).ref.getDownloadURL();
-    print('Url = $avatarUrl');
-
-    return avatarUrl;
 
   }
 
-
-
-
-
-
+   Future uploadToStorage()  async {
+    FirebaseStorage storage = FirebaseStorage.instance;
+    final _url = await storage.ref().getDownloadURL().toString();
+    //await FirebaseAuth.instance.currentUser!.updateProfile(photoURL:  _url);
+    print("Profile Picture uploaded $_url");
+  }
 
 
 
@@ -79,19 +88,37 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
 
 
-
-
     return Scaffold(
       backgroundColor: Colors.black26,
       appBar: AppBar(
-        backgroundColor: Colors.black,
         leading: IconButton(
-            icon: Icon(FontAwesomeIcons.arrowLeft),
-            onPressed: () {
-              Navigator.pop(context);
-            }),
-        title: Text('ข้อมูลส่วนตัว'),
+          icon:Icon(Icons.arrow_back_ios,),
+          onPressed: (){
+            Navigator.pop(context);
+
+          },
+        ),
+        backgroundColor: Colors.black12,
+        elevation: 0,
+        actions: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Profile",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              Text(("ข้อมูล & โปรไฟล์" ) , style: TextStyle(fontSize: 15))
+            ],
+          ),
+          Padding(
+            padding: EdgeInsets.only(right: 8, left: 15),
+            child: Icon(Icons.system_security_update_sharp, size: 30),
+          )
+        ],
       ),
+
       body: Builder(
 
         builder: (context) =>  Container(
@@ -126,8 +153,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                        ) :
                        Image.network(
 
-                         "https://th.bing.com/th/id/R.699638bb6587498159882d713b113bd1?rik=FHlvtdFSitSBwg&pid=ImgRaw&r=0",
-                         fit: BoxFit.fill,
+                         avatarUrl!,
+                         fit: BoxFit.cover,
                        ),
                      ),
 
@@ -137,7 +164,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(top: 10.0),
+                    padding: EdgeInsets.only(top: 0.0),
                     child: IconButton(
                       icon: Icon(
                         FontAwesomeIcons.camera,
@@ -161,13 +188,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   children: <Widget>[
                     Text('Username',
                         style:
-                        TextStyle(color: Colors.white, fontSize: 18.0)),
+                        TextStyle(color: Colors.white, fontSize: 18.0 , fontWeight: FontWeight.bold)),
+
                     SizedBox(width: 20.0),
+
                     Text((username!),
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 20.0,
-                            fontWeight: FontWeight.bold)),
+                            )),
+
                   ],
                 ),
               ),
@@ -179,15 +209,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-                    Text('uid',
+                    Text('UID',
                         style:
-                        TextStyle(color: Colors.white, fontSize: 18.0)),
+                        TextStyle(color: Colors.white, fontSize: 18.0 , fontWeight: FontWeight.bold)),
                     SizedBox(width: 20.0),
                     Text((namepictureuid),
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 12.0,
-                            fontWeight: FontWeight.bold)),
+                           )),
                   ],
                 ),
               ),
@@ -207,13 +237,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   children: <Widget>[
                     Text('Email',
                         style:
-                        TextStyle(color: Colors.white, fontSize: 18.0)),
+                        TextStyle(color: Colors.white, fontSize: 18.0 , fontWeight: FontWeight.bold)),
                     SizedBox(width: 20.0),
                     Text((user_email!),
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 20.0,
-                            fontWeight: FontWeight.bold)),
+                            )),
                   ],
                 ),
               ),
@@ -224,6 +254,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   RaisedButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(80.0)
+                    ),
                     color: Colors.white,
                     onPressed: () {
                       Navigator.of(context).pop();
@@ -231,11 +264,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     elevation: 4.0,
                     splashColor: Colors.white,
                     child: Text(
-                      'Cancel',
+                      'ยกเลิก',
                       style: TextStyle(color: Colors.black, fontSize: 16.0),
                     ),
                   ),
                   RaisedButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(80.0)
+                    ),
                     color: Colors.white,
                     onPressed: () {
                       uploadPic(context);
@@ -245,7 +281,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     elevation: 4.0,
                     splashColor: Colors.white,
                     child: Text(
-                      'Submit',
+                      'ยืนยัน',
                       style: TextStyle(color: Colors.black, fontSize: 16.0),
                     ),
                   ),
