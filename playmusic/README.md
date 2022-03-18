@@ -1,6 +1,6 @@
 # playmusic
 
-playmusic
+Musicly Application ฟังเพลงเชื่อมกับฐานข้อมูล Firebase / ใช้เพื่อเป็นการศึกษาเท่านั้น
 
 ## Getting Started
 
