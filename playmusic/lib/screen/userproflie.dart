@@ -77,7 +77,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     FirebaseStorage storage = FirebaseStorage.instance;
     final _url = await storage.ref().getDownloadURL().toString();
     //await FirebaseAuth.instance.currentUser!.updateProfile(photoURL:  _url);
-    print("Profile Picture uploaded $_url");
+    print("อัพโหลดโปรไฟล์ $_url");
   }
 
 
@@ -95,7 +95,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           icon:Icon(Icons.arrow_back_ios,),
           onPressed: (){
             Navigator.pop(context);
-
           },
         ),
         backgroundColor: Colors.black12,
@@ -157,9 +156,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                          fit: BoxFit.cover,
                        ),
                      ),
-
-
-
                       ),
                     ),
                   ),
@@ -197,7 +193,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             color: Colors.white,
                             fontSize: 20.0,
                             )),
-
                   ],
                 ),
               ),
@@ -227,7 +222,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-
                 ],
               ),
               Container(
@@ -285,7 +279,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       style: TextStyle(color: Colors.black, fontSize: 16.0),
                     ),
                   ),
-
                 ],
               )
             ],
@@ -293,8 +286,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       ),
     );
-
-
   }
 }
 

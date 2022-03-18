@@ -10,6 +10,7 @@ import 'package:rxdart/rxdart.dart';
 
 class MyApp extends StatefulWidget {
   
+// ตัวอย่าง playlist ของ just audio ที่เค้าให้้มา
 
   
   @override
@@ -24,7 +25,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   final _playlist = ConcatenatingAudioSource(
       children: [
     // Remove this audio source from the Windows and Linux version because it's not supported yet
-
     AudioSource.uri(
       Uri.parse(
           "https://firebasestorage.googleapis.com/v0/b/playmusic-d056c.appspot.com/o/Music%2FSunshine%20City.mp3?alt=media&token=d8198cce-7603-417a-8970-5ed576a1c108"),
@@ -92,7 +92,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     // Listen to errors during playback.
     _player.playbackEventStream.listen((event) {},
         onError: (Object e, StackTrace stackTrace) {
-          print('A stream error occurred: $e');
+          print('ระบบเออเร่อ : $e');
         });
     try {
       // Preloading audio is not currently supported on Linux.
@@ -101,7 +101,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
     } catch (e) {
       // Catch load errors: 404, invalid url...
-      print("Error loading audio source: $e");
+      print("เออเร่อ โหลดเพลงไม่ได้ : $e");
     }
   }
 
@@ -293,7 +293,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
               ),
               Container(
 
-                height: 170.0,
+                height: 100.0,
 
                 child: StreamBuilder<SequenceState?>(
                   stream: _player.sequenceStateStream,

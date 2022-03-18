@@ -15,7 +15,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:playmusic/screen/musicplay.dart';
 
-
+// ของเก่า audio player ไม่ได้ใช้
 
 class Songkwidgetbottom extends StatefulWidget {
   String name, image, url, singer ;

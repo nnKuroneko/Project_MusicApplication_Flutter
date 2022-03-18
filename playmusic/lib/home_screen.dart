@@ -13,7 +13,6 @@ import 'package:playmusic/screen/musicplay.dart';
 import 'package:playmusic/screen/playlist.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:playmusic/screen/playlistall.dart';
-import 'package:playmusic/screen/upload.dart';
 import 'package:playmusic/screen/userproflie.dart';
 import 'package:playmusic/testcode.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';

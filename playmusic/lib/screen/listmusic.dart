@@ -55,11 +55,9 @@ class _SearchState extends State<Search> {
 
                 child:  Column(
                   children: <Widget>[
-
                     SizedBox(
                       height: 10,
                     ),
-
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -92,35 +90,19 @@ class _SearchState extends State<Search> {
                             ),
                           ],
                         ),
-
-
                       ],
                     ),
-
                     SizedBox(
                       height: 10,
                     ),
-
-
-
                   ],
-
-
-
-
-
                 ),
-
-
               ),
-
             );
           }
-
       );
     }
 
-    
     return Scaffold(
 
     // floatingActionButton: FloatingActionButton(child: Icon(Icons.clear), onPressed: () {
@@ -154,12 +136,9 @@ class _SearchState extends State<Search> {
 
           ],
 
-
           backgroundColor: Colors.white,
           elevation: 0,
           iconTheme: IconThemeData(color: Colors.black),
-
-
 
         // leading: Icon(Icons.menu),
 

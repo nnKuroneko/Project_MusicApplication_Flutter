@@ -35,7 +35,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool? isChecked = false;
 
   late String username;
-  late String avatarUrl;
+  late String avatarUrl = "https://i1.sndcdn.com/avatars-000241167684-al6jq6-t500x500.jpg";
 
 
   Widget _buildTextField(
@@ -383,47 +383,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 const SizedBox(
                                   height: 10,
                                 ),
-                                Container(
-                                  alignment: Alignment.centerLeft,
-                                  child: const Text(
-                                    'Profile link',
-                                    style: TextStyle(
-                                      fontFamily: 'PT-Sans',
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                _buildTextField(
 
-                                  prefixedIcon: TextFormField(
-                                    onChanged: (value) => avatarUrl = value.trim(),
-                                    style: TextStyle(color: Colors.white),
-                                    controller: _avatarUrl,
-                                    validator: (value) {
-                                      if (value!.isEmpty) return 'โปรดใส่ลิ้งรูปโปรไฟล์ของคุณ';
-
-                                      return null;
-                                    },
-                                    onSaved: (newValue) => register.avatarUrl = newValue!,
-
-
-                                    obscureText: false,
-                                    decoration: new InputDecoration(
-                                      //fillColor: Colors.orange, filled: true, พื้นหลัง
-                                      hintText: 'ใส่ลิ้งรูปโปรไฟล์ของคุณ',
-                                      hintStyle: TextStyle(color: Colors.grey),
-                                      prefixIcon: Icon(Icons.picture_in_picture, color: Colors.white),
-                                    ),
-                                  ), obscureText: false,
-
-
-
-                                ),
                                 const SizedBox(
                                   height: 25,
                                 ),

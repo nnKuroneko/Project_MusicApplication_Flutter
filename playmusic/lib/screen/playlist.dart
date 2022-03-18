@@ -157,14 +157,11 @@ class SongskWidget extends StatelessWidget {
                                   singer: documentSnapshot["singer"].toString(),
                                   duration: documentSnapshot["duration"].toInt(),
 
-
                                 ),
                                 //pageBuilder: (context, _, __) => MusicBarScreen(widget.song)
 
                               ),
                             );
-
-
 
                             notifyParent();
                           },
@@ -217,21 +214,13 @@ class SongskWidget extends StatelessWidget {
                                     //       ),
                                     //       )
 
-
                                   ],
                                 ),
 
                                 SizedBox(
                                   height: 20,
                                 ),
-
-
-
                               ],
-
-
-
-
 
                             ),
 
@@ -380,8 +369,6 @@ class ArtistWidget extends StatelessWidget {
 
   }
 }
-
-
 
 class PlaylistWidget extends StatelessWidget {
 

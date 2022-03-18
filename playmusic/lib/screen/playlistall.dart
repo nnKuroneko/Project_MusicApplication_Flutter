@@ -60,7 +60,6 @@ class _PlayListAllState extends State<PlayListAllScreen> with SingleTickerProvid
             ),
           ),
 
-
         flexibleSpace: Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -81,11 +80,9 @@ class _PlayListAllState extends State<PlayListAllScreen> with SingleTickerProvid
         children: [
           GestureDetector(
           onTap: () {
-
               Navigator.push(context,
                   new MaterialPageRoute(builder: (context) => new MyApp())
               );
-
         },
 
       child: Container(
@@ -98,11 +95,9 @@ class _PlayListAllState extends State<PlayListAllScreen> with SingleTickerProvid
 
                 Row(
                   children: [
-
                     SizedBox(
                       height: 100,
                     ),
-
                     Hero(
                       tag: "image",
                       child: CircleAvatar(
@@ -131,7 +126,6 @@ class _PlayListAllState extends State<PlayListAllScreen> with SingleTickerProvid
                     ),
                   ],
                 ),
-
               ],
             ),
             SizedBox(
@@ -141,23 +135,17 @@ class _PlayListAllState extends State<PlayListAllScreen> with SingleTickerProvid
         ),
       ),
     ),
-
           SizedBox(
             height: 300,
           ),
-
           GestureDetector(
             onTap: () {
-
               Navigator.push(context,
                   new MaterialPageRoute(builder: (context) => new PlaylistWidgetScreen(
-
-
                   ))
               );
 
             },
-
             child: Container(
               child:  Column(
                 children: <Widget>[
@@ -165,10 +153,8 @@ class _PlayListAllState extends State<PlayListAllScreen> with SingleTickerProvid
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
 
-
                       Row(
                         children: [
-
                           SizedBox(
                             height: 250,
                           ),
@@ -200,7 +186,6 @@ class _PlayListAllState extends State<PlayListAllScreen> with SingleTickerProvid
                           ),
                         ],
                       ),
-
                     ],
                   ),
 
@@ -211,8 +196,6 @@ class _PlayListAllState extends State<PlayListAllScreen> with SingleTickerProvid
               ),
             ),
           )
-
-
         ],
       ),
     );

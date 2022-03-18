@@ -2,6 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+
+// ส่วนของ search เพลง
+
 class DataController extends GetxController {
   Future getData(String collection) async {
     final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
@@ -15,6 +18,6 @@ class DataController extends GetxController {
         .collection('songs')
         .where('name',isGreaterThanOrEqualTo: queryString)
         .get();
-  }
+      }
   
 }

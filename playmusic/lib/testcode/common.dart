@@ -3,6 +3,9 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:playmusic/screen/mainscreen.dart';
 
+
+// class service ของ just audio
+
 class SeekBar extends StatefulWidget {
   final Duration duration;
   final Duration position;

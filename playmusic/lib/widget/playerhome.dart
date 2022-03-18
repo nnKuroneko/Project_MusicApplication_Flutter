@@ -20,6 +20,9 @@ import 'package:playmusic/screen/userproflie.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:audioplayers/audioplayers.dart';
 
+
+// ส่วนของ Miniplayer ไม่ได้ใช้
+
 class PlayerHome extends StatefulWidget {
 
   String name, image, url, singer ;

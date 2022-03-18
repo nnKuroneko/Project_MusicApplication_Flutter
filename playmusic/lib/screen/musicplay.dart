@@ -6,6 +6,7 @@ import 'dart:ui';
 import 'package:audio_manager/audio_manager.dart';
 import 'package:audio_session/audio_session.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -105,7 +106,7 @@ class _MusicPlayerState extends State<MusicPlayer> with WidgetsBindingObserver {
           AudioSource.uri(
               Uri.parse(widget.url)));
     } catch (e) {
-      print("Error loading audio source: $e");
+      print("เออเร่อ ไม่สามารถโหลดเพลงได้ : $e");
     }
   }
 
@@ -238,12 +239,16 @@ class _MusicPlayerState extends State<MusicPlayer> with WidgetsBindingObserver {
                                     );
 
                                   } else {
+
+                                   // final uid = FirebaseAuth.instance.currentUser!.uid;
+
                                   await createmusicplaylist.add({
                                   "name": widget.name,
                                   "image" : widget.image,
                                   "url" : widget.url,
                                   "singer": widget.singer,
                                   "duration": widget.duration,
+                                    "uid": FirebaseAuth.instance.currentUser!.uid,
                                   });
                                   Fluttertoast.showToast(
                                       msg: 'เพิ่มเข้าเพลย์ลิสเรียบร้อยแล้ว',

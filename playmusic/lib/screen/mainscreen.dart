@@ -109,15 +109,10 @@ class _MainScreenState extends State<MainScreen>  with SingleTickerProviderState
                 ],
               ),
             ),
-
-
-
             Align(
               alignment: Alignment.bottomCenter,
-              //child: PlayerHome(),
+             // child: PlayerHome(),          //Miniplayer ทำไม่เป็น
             ),
-
-
 
           ],
         )
@@ -139,7 +134,7 @@ Song currentSong = Song(
     singer: "",
     url: "assets/songs/",
     image: "",
-    duration: 100
+    duration: 0
 );
 
 

@@ -26,8 +26,6 @@ class ArtistScreen extends StatefulWidget {
 class _ArtistScreenState extends State<ArtistScreen> {
 
 
-
-
   @override
   Widget build(BuildContext context) {
     var mediaQuery = MediaQuery.of(context);
@@ -37,7 +35,6 @@ class _ArtistScreenState extends State<ArtistScreen> {
       key: scaffoldState,
       body: Stack(
         children: <Widget>[
-
           _buildWidgetAlbumCover(mediaQuery),
           _buildWidgetActionAppBar(mediaQuery),
           _buildWidgetArtistName(mediaQuery),
@@ -129,18 +126,24 @@ class _ArtistScreenState extends State<ArtistScreen> {
                         child: ListView.separated(
                           padding: EdgeInsets.zero,
                           separatorBuilder: (BuildContext context, int index) {
-                            return Opacity(
-                              opacity: 0.5,
-                              child: Padding(
-                                padding: const EdgeInsets.only(top: 2.0),
-                                child: Divider(
-                                  color: Colors.grey,
-                                ),
-                              ),
-                            );
+                            return SizedBox.shrink();
+
+                        //   Opacity(
+                        //     opacity: 1,
+                        //     child: Padding(
+                        //       padding: const EdgeInsets.only(top: 1.0),
+                        //       child: Divider(
+                        //         color: Colors.white,
+                        //       ),
+                        //     ),
+                        //   ),
+
                           },
+
+
                           itemCount: streamSnapshot.data!.docs.length,
                           itemBuilder: (BuildContext context, int index) {
+
                             final DocumentSnapshot documentSnapshot = streamSnapshot.data!.docs[index];
 
                             if (documentSnapshot["singer"] == widget.singer ){
@@ -160,6 +163,8 @@ class _ArtistScreenState extends State<ArtistScreen> {
                                     ),
                                   );
                                 },
+
+
                                 child: Row(
 
                                   children: <Widget>[
@@ -167,8 +172,6 @@ class _ArtistScreenState extends State<ArtistScreen> {
                                     SizedBox(height: 24.0),
 
                                     Expanded(
-
-
                                       child: Text(
                                         documentSnapshot["name"].toString(),
                                         style: TextStyle(
@@ -179,24 +182,27 @@ class _ArtistScreenState extends State<ArtistScreen> {
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
+
                                     Text(
                                       documentSnapshot["singer"].toString(),
                                       style: TextStyle(
                                         color: Colors.white,
                                       ),
                                     ),
-                                   // SizedBox(width: 24.0),
-                               //    Icon(
-                               //      Icons.more_horiz,
-                               //      color: Colors.grey,
-                               //    ),
 
+                                    SizedBox(height: 35.0),
 
                                   ],
                                 ),
+
+
                               );
+                            }else{
+                              return SizedBox.shrink();
                             }
-                            return SizedBox.shrink();
+
+
+
                           },
                         ),
                       ),
@@ -216,7 +222,7 @@ class _ArtistScreenState extends State<ArtistScreen> {
     );
 
 
-  }
+  } // รายชื่อเพลง
 
   Widget _buildWidgetHeaderSong() {
 
@@ -272,7 +278,6 @@ class _ArtistScreenState extends State<ArtistScreen> {
     );
   }
 
-
   Widget _buildWidgetActionAppBar(MediaQueryData mediaQuery) {
     return  Scaffold(
       backgroundColor: Colors.transparent,
@@ -300,7 +305,7 @@ class _ArtistScreenState extends State<ArtistScreen> {
           ),
           Padding(
             padding: EdgeInsets.only(right: 8, left: 15),
-            child: Icon(Icons.notifications_active_outlined, size: 30),
+            child: Icon(Icons.photo_album_sharp, size: 30),
           )
         ],
       ),

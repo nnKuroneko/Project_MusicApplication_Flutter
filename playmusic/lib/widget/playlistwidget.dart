@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:playmusic/home_screen.dart';
@@ -137,15 +138,7 @@ class _PlaylistWidgetScreenState extends State<PlaylistWidgetScreen> {
                         child: ListView.separated(
                           padding: EdgeInsets.zero,
                           separatorBuilder: (BuildContext context, int index) {
-                            return Opacity(
-                              opacity: 0.5,
-                              child: Padding(
-                                padding: const EdgeInsets.only(top: 2.0),
-                                child: Divider(
-                                  color: Colors.grey,
-                                ),
-                              ),
-                            );
+                            return SizedBox.shrink();
                           },
 
 
@@ -153,7 +146,9 @@ class _PlaylistWidgetScreenState extends State<PlaylistWidgetScreen> {
                           itemBuilder: (BuildContext context, int index) {
 
                             final DocumentSnapshot documentSnapshot = streamSnapshot.data!.docs[index];
+                            final uid = FirebaseAuth.instance.currentUser!.uid;
 
+                            if(uid ==  documentSnapshot["uid"].toString()) {
                               return GestureDetector(
                                 onTap: () {
                                   Navigator.push(
@@ -210,12 +205,10 @@ class _PlaylistWidgetScreenState extends State<PlaylistWidgetScreen> {
 
 
                               );
+                            }else{
+                              return SizedBox.shrink();
+                            }
 
-
-
-
-
-                            return SizedBox.shrink();
 
                           },
 

@@ -15,6 +15,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:playmusic/screen/musicplay.dart';
 
+// ส่วนของ MiniPlayer
+
 
 class MusicBarScreen extends StatefulWidget {
 
